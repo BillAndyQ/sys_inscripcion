@@ -14,10 +14,6 @@ use Symfony\Component\HttpFoundation\Request;
 // Crear una colección de rutas
 $routes = new RouteCollection();
 
-// Definir una ruta básica
-// $routes->add('hello', new Route('/hello/{name}', ['_controller' => function ($name) {
-//     return 'Hello, '.$name;
-// }]));
 require_once './app/urls.php';
 
 
