@@ -428,6 +428,7 @@
       console.log('Departamentos únicos:', departamentosArray);
       // Obtener el elemento select por su ID
       var inputDepartamento = document.getElementById("departamento");
+      var inputProvincia = document.getElementById("provincia");
 
       departamentosArray.forEach(item => {
         var option = document.createElement("option");
@@ -435,6 +436,38 @@
 
         inputDepartamento.add(option);
       });
+
+      loadProvincias("AMAZONAS");
+      // EVENT
+      inputDepartamento.addEventListener("change", function(event) {
+        // Manejar el evento aquí
+        var departamento = event.target.value;
+        console.log(departamento);
+        loadProvincias(departamento);
+      });
+
+      function loadProvincias(departamento){
+          var provincias = {};
+          data.forEach(objeto => {
+            if(objeto['departamento']==departamento){
+              const provincia = objeto['provincia'];
+              console.log(provincia);
+              if (!provincias[provincia]) {
+                provincias[provincia] = true;
+              }
+            }
+          });
+          const provinciasArray = Object.keys(provincias);
+          console.log('Provincias:', provincias);
+          inputProvincia.innerHTML = "";
+          provinciasArray.forEach(item => {
+            var option = document.createElement("option");
+            option.text = item;
+
+            inputProvincia.add(option);
+          });
+          }
+
 
     })
     .catch(error => {
