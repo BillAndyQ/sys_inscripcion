@@ -90,36 +90,28 @@
             </div>
           </div>
         </div>
-        <!-- DISTRITO -->
+        <!-- DEPARTAMENTO -->
+        <div class="sm:col-span-2">
+          <label for="country" class="block text-sm font-medium leading-6 text-gray-900">Departamento</label>
+          <div class="mt-2">
+            <select id="departamento" name="departamento" autocomplete="departamento" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+            </select>
+          </div>
+        </div>
+        <div class="sm:col-span-2">
+          <label for="country" class="block text-sm font-medium leading-6 text-gray-900">Provincia</label>
+          <div class="mt-2">
+            <select id="provincia" name="provincia" autocomplete="provincia" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+     
+            </select>
+          </div>
+        </div>
+
         <div class="sm:col-span-2">
           <label for="country" class="block text-sm font-medium leading-6 text-gray-900">Distrito</label>
           <div class="mt-2">
             <select id="country" name="country" autocomplete="country-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
-              <option>Lima</option>
-              <option>Canada</option>
-              <option>Mexico</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="sm:col-span-2">
-          <label for="country" class="block text-sm font-medium leading-6 text-gray-900">Provincia</label>
-          <div class="mt-2">
-            <select id="country" name="country" autocomplete="country-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
-              <option>Lima</option>
-              <option>Canada</option>
-              <option>Mexico</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="sm:col-span-2">
-          <label for="country" class="block text-sm font-medium leading-6 text-gray-900">Departamento</label>
-          <div class="mt-2">
-            <select id="country" name="country" autocomplete="country-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
-              <option>Lima</option>
-              <option>Canada</option>
-              <option>Mexico</option>
+     
             </select>
           </div>
         </div>
@@ -193,11 +185,11 @@
           <legend class="text-sm font-semibold leading-6 text-gray-900">Sexo</legend>
           <div class="mt-4 space-y-3">
             <div class="flex items-center gap-x-3">
-              <input id="push-everything" name="push-notifications" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600">
+              <input id="sexo" name="sexo" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600">
               <label for="push-everything" class="block text-sm font-medium leading-6 text-gray-900">Masculino</label>
             </div>
             <div class="flex items-center gap-x-3">
-              <input id="push-email" name="push-notifications" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600">
+              <input id="sexo" name="sexo" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600">
               <label for="push-email" class="block text-sm font-medium leading-6 text-gray-900">Femenino</label>
             </div>
           </div>
@@ -407,17 +399,52 @@
   </div>
 </form>
 <script>
-    // Obtener el campo de entrada de fecha por su ID
-    var fechaInput = document.getElementById("fecha");
+  let jsonData; // Declara una variable para almacenar los datos JSON
 
-    // Obtener la fecha actual
-    var fechaActual = new Date();
+  fetch('https://raw.githubusercontent.com/jmcastagnetto/ubigeo-peru-aumentado/main/ubigeo_ccpp.json')
+    .then(response => {
+      // Verificar si la solicitud fue exitosa (código de estado 200)
+      if (!response.ok) {
+        throw new Error('Error al cargar el JSON');
+      }
+      // Parsear el JSON y almacenarlo en la variable
+      return response.json();
+    })
+    .then(data => {
+      console.log(data[0]['departamento']);
+      const departamentosUnicos = {};
+      // Iterar sobre cada objeto en el JSON
+      data.forEach(objeto => {
+        // Extraer el valor de la columna "Departamento" de cada objeto
+        const departamento = objeto['departamento'];
+        // Agregar el departamento al objeto solo si aún no está presente
+        if (!departamentosUnicos[departamento]) {
+          departamentosUnicos[departamento] = true;
+        }
+      });
 
-    // Formatear la fecha como YYYY-MM-DD (formato requerido para input type="date")
-    var fechaFormateada = fechaActual.toISOString().split('T')[0];
+      // Extraer los nombres de los departamentos únicos del objeto
+      const departamentosArray = Object.keys(departamentosUnicos);
+      console.log('Departamentos únicos:', departamentosArray);
+      // Obtener el elemento select por su ID
+      var inputDepartamento = document.getElementById("departamento");
 
-    // Establecer el valor del campo de entrada de fecha
-    fechaInput.value = fechaFormateada;
+      departamentosArray.forEach(item => {
+        var option = document.createElement("option");
+        option.text = item;
+
+        inputDepartamento.add(option);
+      });
+
+
+    })
+    .catch(error => {
+      // Capturar y manejar errores
+      console.error('Error:', error);
+    });
+
+   
+
   </script>
 </body>
 </html>
