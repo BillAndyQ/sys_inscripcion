@@ -14,10 +14,25 @@
             background-size: cover; /* Ajusta el tamaño del fondo */
             background-position: center;
         }
+
+
+        @media screen and (max-width: 1024px) {
+            #content {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: calc(100vh - 130px);
+                width: 100vw;
+            }
+        }
+
     </style>
 </head>
 <body>
+
     <section class="bg-black bg-opacity-20">
+    <div id="content">
+
   <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
       <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
       <img src="https://institutovrht.edu.pe/images/logo_2021.png" alt="">    
@@ -37,6 +52,9 @@
           </div>
       </div>
   </div>
+</div>
+
 </section>
+
 </body>
 </html>

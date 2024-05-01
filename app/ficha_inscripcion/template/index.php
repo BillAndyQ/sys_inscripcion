@@ -436,7 +436,6 @@
         inputDepartamento.add(option);
       });
 
-
     })
     .catch(error => {
       // Capturar y manejar errores
